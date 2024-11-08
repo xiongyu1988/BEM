@@ -13,12 +13,15 @@
 ## 📚 Main Content
 
 ### 1. Key Points
-- Main point 1
-  - Sub-point A
-  - Sub-point B
-- Main point 2
-  - Sub-point A
-  - Sub-point B
+Understanding Boundary Element Method (BEM) always start with a simple 1D problem which could be 1D Laplace equation. This is a great application for both mathematical explanation and visualization. 
+
+### Green's Identities and reciprocal relation
+These identities are fundamental to the Boundary Element Method (BEM). They allow us to convert domain integrals to boundary integrals. They're crucial for proving uniqueness of solutions. 
+
+In the context of Laplace Equation,
+1. Green's first indentity represent energy conservation.
+2. The boundary terms represent flux through the boundaries.
+3. The integral term represents the internal energy.
 
 ### 2. Important Details
 #### Section A
