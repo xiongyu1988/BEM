@@ -9,13 +9,34 @@
 
 Understanding Boundary Element Method (BEM) always start with a simple 1D problem which could be 1D Laplace equation. This is a great application for both mathematical explanation and visualization. 
 
-### Green's Identities and reciprocal relation
+### 1. 1D Laplace Equation
+Considering Laplace's equation in one dimension for an unknown function $f(x)$,
+
+```math
+\frac{d^{2}f}{d x^{2}} = 0
+```
+
+The general solution of this 1D Laplace equation is a linear function:
+
+```math
+f(x) = a x + b
+```
+
+where $a$ and $b$ are constant determined by boundary conditions.
+
+### 2. Green's Identities and reciprocal relation
 These identities are fundamental to the Boundary Element Method (BEM). They allow us to convert domain integrals to boundary integrals. They're crucial for proving uniqueness of solutions. 
 
 In the context of Laplace Equation,
 1. Green's first indentity represent energy conservation.
 2. The boundary terms represent flux through the boundaries.
 3. The integral term represents the internal energy.
+
+** Green's First Identity ** in 1D: Multiplying the left-hand side of 1D Laplace equation by a twice-differentiable function $\phi(x)$ and rearranging, we obtain Green's first identity,
+
+```math
+\int_a^b v\frac{d^2u}{dx^2}dx = \left[v\frac{du}{dx}\right]_a^b - \int_a^b \frac{dv}{dx}\frac{du}{dx}dx
+```
 
 ### Green's Function for 1D Laplace Equation
 
@@ -97,48 +118,147 @@ where:
    - The linear behavior minimizes the energy integral
    - Satisfies the principle of minimum potential energy
 
-### Applications
 
-1. **Boundary Value Problems**
-   - Solving problems with known boundary conditions
-   - Converting domain integrals to boundary integrals
-   - Handling point sources and distributed loads
+# Relationship Between Boundary Value Problems and Green's Second Identity
 
-2. **Numerical Methods**
-   - Foundation for boundary element methods
-   - Basis for fundamental solution methods
-   - Green's function as a test function
+## 1. Green's Second Identity
 
-### Important Characteristics
+Green's second identity (also known as Green's second theorem) in 1D states:
 
-#### Mathematical Properties
-- Linearity
-- Symmetry
-- Jump discontinuity in derivative
-- Smoothness away from source point
+For two functions u(x) and v(x) that are twice continuously differentiable:
 
-#### Physical Properties
-- Represents fundamental physics of the problem
-- Satisfies conservation principles
-- Mimics real physical responses
+```math
+\int_a^b (v\frac{d^2u}{dx^2} - u\frac{d^2v}{dx^2})dx = \left[v\frac{du}{dx} - u\frac{dv}{dx}\right]_a^b
+```
 
-### Visualization Guide
+## 2. Connection to Boundary Value Problems
 
-The interactive visualization above demonstrates:
+### 2.1 Standard Boundary Value Problem
 
-1. **Source Position (ξ)**
-   - Adjustable using the slider
-   - Shows how the solution shifts with source location
+Consider the boundary value problem:
 
-2. **Function View**
-   - Shows the Green's function G(x,ξ)
-   - Demonstrates the V-shaped profile
-   - Highlights the continuity of the function
+```math
+\frac{d^2u}{dx^2} = f(x) \quad \text{in } (a,b)
+```
 
-3. **Derivative View**
-   - Shows the jump discontinuity
-   - Illustrates constant derivatives on either side
-   - Demonstrates the source strength
+with boundary conditions:
+```math
+u(a) = \alpha, \quad u(b) = \beta
+```
+
+### 2.2 Using Green's Function
+
+Let G(x,ξ) be the Green's function satisfying:
+
+```math
+\frac{d^2G}{dx^2} = -\delta(x-\xi)
+```
+
+with homogeneous boundary conditions:
+```math
+G(a,\xi) = G(b,\xi) = 0
+```
+
+## 3. Deriving the Boundary Value Representation
+
+### 3.1 Application of Green's Second Identity
+
+1. Start with Green's second identity, using G(x,ξ) as v(x):
+
+```math
+\int_a^b (G\frac{d^2u}{dx^2} - u\frac{d^2G}{dx^2})dx = \left[G\frac{du}{dx} - u\frac{dG}{dx}\right]_a^b
+```
+
+2. Substitute the known equations:
+   - d²u/dx² = f(x)
+   - d²G/dx² = -δ(x-ξ)
+
+```math
+\int_a^b (Gf(x) + u\delta(x-\xi))dx = \left[G\frac{du}{dx} - u\frac{dG}{dx}\right]_a^b
+```
+
+### 3.2 Using Properties of Delta Function
+
+The sifting property of the delta function gives:
+
+```math
+\int_a^b u\delta(x-\xi)dx = u(\xi)
+```
+
+### 3.3 Resulting Representation
+
+This leads to the boundary value representation:
+
+```math
+u(\xi) = \int_a^b G(x,\xi)f(x)dx + \left[G(x,\xi)\frac{du}{dx} - u(x)\frac{\partial G}{\partial x}\right]_a^b
+```
+
+## 4. Key Insights
+
+### 4.1 Physical Interpretation
+
+- The first term represents the contribution from the source term f(x)
+- The boundary terms represent the influence of boundary conditions
+- Green's function G(x,ξ) acts as a weighting function
+
+### 4.2 Mathematical Properties
+
+1. **Symmetry**:
+```math
+G(x,\xi) = G(\xi,x)
+```
+
+2. **Jump Condition**:
+```math
+\left[\frac{\partial G}{\partial x}\right]_{x=\xi} = -1
+```
+
+3. **Continuity**:
+```math
+[G]_{x=\xi} = 0
+```
+
+## 5. Application Example
+
+For the 1D Laplace equation:
+
+```math
+\frac{d^2u}{dx^2} = 0
+```
+
+The boundary value representation simplifies to:
+
+```math
+u(\xi) = \left[G(x,\xi)\frac{du}{dx} - u(x)\frac{\partial G}{\partial x}\right]_a^b
+```
+
+This shows that the solution is completely determined by boundary values and fluxes.
+
+## 6. Practical Significance
+
+1. **Numerical Methods**:
+   - Forms the basis for boundary element method (BEM)
+   - Reduces dimensional complexity of the problem
+
+2. **Analysis**:
+   - Provides insight into solution behavior
+   - Helps prove existence and uniqueness
+
+3. **Engineering Applications**:
+   - Heat conduction
+   - Electrostatics
+   - Fluid flow
+   - Structural mechanics
+
+## 7. Conclusion
+
+The relationship between boundary value representation and Green's second identity is fundamental in:
+- Converting differential equations to integral equations
+- Developing numerical solution methods
+- Understanding physical systems
+- Proving mathematical properties of solutions
+
+This connection provides both theoretical insight and practical tools for solving boundary value problems.
 
 ### References and Further Reading
 
